@@ -72,7 +72,6 @@ public class PanneauDessin extends JPanel {
 					}
 				}
 			}
-
 			public void mouseDragged(MouseEvent e) {
 				if (getCursor().equals(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR))) {
 					f.setX(e.getXOnScreen() - Xmove);
@@ -87,17 +86,17 @@ public class PanneauDessin extends JPanel {
 						f.setLastX(e.getX());
 						f.setLastY(e.getY());
 					}
-				}else if (formeG == "GenererMaison"){
-					 if (f != null) {
+				} else if (formeG == "GenererMaison") {
+					if (f != null) {
 						f.setWidth(getLargeur());
 						f.setHeight(getHauteur());
-						
+
 					}
-				}else{
-					 if (f != null) {
+				} else {
+					if (f != null) {
 						f.setWidth(e.getX() - f.getX());
 						f.setHeight(e.getY() - f.getY());
-						
+
 					}
 				}
 				repaint();
@@ -108,7 +107,7 @@ public class PanneauDessin extends JPanel {
 				if (getCursor().equals(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR))) {
 					Xmove = e.getXOnScreen() - (int) f.getX();
 					Ymove = e.getYOnScreen() - (int) f.getY();
-					
+
 				} else {
 					if (formeG == "trace_manuelle") {
 						traceLigne = new TraceLigne(e.getX(), e.getY(), tailleFG, colFore, formeG);
@@ -116,13 +115,12 @@ public class PanneauDessin extends JPanel {
 					} else if (formeG == "GenererMaisonAuto") {
 						f = new Geometrie(e.getX(), e.getY(), getColT(), getColM(), getColM(), getColP(), formeG);
 						tableG.add(f);
-						
-					}else if (formeG == "GenererMaison") {
+
+					} else if (formeG == "GenererMaison") {
 						f = new Geometrie(e.getX(), e.getY(), getColT(), getColM(), getColM(), getColP(), formeG);
 						tableG.add(f);
-						
-					}
-					else{
+
+					} else {
 						f = new Geometrie(e.getX(), e.getY(), tailleFG, colFore, formeG);
 						f.setLastX(e.getX());
 						f.setLastY(e.getY());
@@ -136,305 +134,305 @@ public class PanneauDessin extends JPanel {
 			}
 		});
 	}
+
 // Pour pouvoir dessiner dans le panneau de dessin
 	protected void paintComponent(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setColor(getColBack());
 		g2.fillRect(0, 0, this.getWidth(), this.getHeight());
-			if (image != null) {
-				g.drawImage(image, 0, 0, null);
-			}
-			for (Geometrie list : tableG) {
-				g2.setColor(list.getBordureCol());
-				g2.setStroke(new BasicStroke(list.getContourTaille(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
-				switch (list.typeForme) {
-				case "trace_manuelle":
-					TraceLigne lg = (TraceLigne) list;
-					for (Line2D l : lg.getmL()) {
-						g2.draw(l);
-					}
-					break;
-				case "trace_ligne":
-					Line2D ligne2d = new Line2D.Double(list.getX(), list.getY(), list.getLastX(), list.getLastY());
-					g2.draw(ligne2d);
-					
-					list.setLargeurM((int)list.getLastX()-(int)list.getX());
-					break;
-
-				case "traceRectangleV":
-					Rectangle2D rectangle = new Rectangle2D.Double(list.getX(), list.getY(), list.getWidth(),
-							list.getHeight());
-					g2.setStroke(
-							new BasicStroke(list.getContourTaille(), BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER));
-					list.setLargeurM((int)list.getWidth());
-					list.setHauteurM((int)list.getHeight());
-					g2.draw(rectangle);
-					break;
-
-				case "traceRectangleP":
-					Rectangle2D rectangleP = new Rectangle2D.Double(list.getX(), list.getY(), list.getWidth(),
-							list.getHeight());
-					list.setLargeurM((int)list.getWidth());
-					list.setHauteurM((int)list.getHeight());
-					g2.setStroke(
-							new BasicStroke(list.getContourTaille(), BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER));
-
-					g2.fill(rectangleP);
-					break;
-
-				case "traceCercleV":
-					Ellipse2D ellypse = new Ellipse2D.Double(list.getX(), list.getY(), list.getWidth(),
-							list.getHeight());
-					g2.draw(ellypse);
-					break;
-
-				case "traceCercleP":
-					Ellipse2D ellypseP = new Ellipse2D.Double(list.getX(), list.getY(), list.getWidth(),
-							list.getHeight());
-					g2.fill(ellypseP);
-					break;
-				case "traceTriangleV":
-					Polygon triangleL = new Polygon(
-							new int[] { (int) (list.getWidth() / 2 + list.getX()),
-									(int) (list.getWidth() + list.getX()), (int) list.getX() },
-							new int[] { (int) list.getY(), (int) (list.getHeight() + list.getY()),
-									(int) (list.getHeight() + list.getY()) },
-							3);
-					g2.draw(triangleL);
-					break;
-				case "traceTriangleP":
-					Polygon triangleLP = new Polygon(
-							new int[] { (int) (list.getWidth() / 2 + list.getX()),
-									(int) (list.getWidth() + list.getX()), (int) list.getX() },
-							new int[] { (int) list.getY(), (int) (list.getHeight() + list.getY()),
-									(int) (list.getHeight() + list.getY()) },
-							3);
-					g2.fill(triangleLP);
-					break;
-				case "tracePolygoneV":
-					Polygon HexagoneP = new Polygon(
-							new int[] { (int) (list.getWidth() / 2 + list.getX()),
-									(int) (list.getWidth() + list.getX()), (int) (list.getWidth() + list.getX()),
-									(int) (list.getWidth() / 2 + list.getX()), (int) list.getX(), (int) list.getX() },
-							new int[] { (int) list.getY(), (int) (list.getHeight() / 4 + list.getY()),
-									(int) ((list.getHeight() * 3) / 4 + list.getY()),
-									(int) (list.getHeight() + list.getY()),
-									(int) ((list.getHeight() * 3) / 4 + list.getY()),
-									(int) (list.getHeight() / 4 + list.getY()) },
-							6);
-
-					g2.draw(HexagoneP);
-					break;
-				case "tracePolygoneP":
-					Polygon Hexagone = new Polygon(
-							new int[] { (int) (list.getWidth() / 2 + list.getX()),
-									(int) (list.getWidth() + list.getX()), (int) (list.getWidth() + list.getX()),
-									(int) (list.getWidth() / 2 + list.getX()), (int) list.getX(), (int) list.getX() },
-							new int[] { (int) list.getY(), (int) (list.getHeight() / 4 + list.getY()),
-									(int) ((list.getHeight() * 3) / 4 + list.getY()),
-									(int) (list.getHeight() + list.getY()),
-									(int) ((list.getHeight() * 3) / 4 + list.getY()),
-									(int) (list.getHeight() / 4 + list.getY()) },
-							6);
-
-					g2.fill(Hexagone);
-					break;
-				case "GenererMaison":					
-//					//Toles
-					g2.setColor(list.getColT());
-					Polygon p = new Polygon();
-					p.addPoint((int) list.getWidth() / 4 + (int) list.getX(),
-							(int) (list.getHeight() / 6 + (int) list.getY()));
-					p.addPoint(((int) list.getWidth() / 4) * 5 + (int) list.getX(),
-							(int) (list.getHeight() / 6 + (int) list.getY()));
-					p.addPoint((int) list.getWidth() + (int) list.getWidth() / 12 + (int) list.getX(),
-							(int) (list.getHeight()) / 3 + (int) list.getY());
-					p.addPoint((int) list.getWidth() / 12 + (int) list.getX(),
-							(int) (list.getHeight()) / 3 + (int) list.getY());
-					g.fillPolygon(p);
-
-					g2.setColor(new Color(0xAEAEAE));
-
-					g2.draw(new Line2D.Double(((int) list.getWidth() / 4) * 5 + (int) list.getX(),
-							(int) (list.getHeight()) / 6 + (int) list.getY(),
-							((int) list.getWidth() / 3) * 4 + (int) list.getX(),
-							(int) (list.getHeight()) / 5 + (int) list.getY()));
-					g2.draw(new Line2D.Double(((int) list.getWidth() / 3) * 4 + (int) list.getX(),
-							(int) (list.getHeight()) - (int) (list.getHeight()) / 2 + (int) list.getY(),
-							((int) list.getWidth() / 3) * 4 + (int) list.getX(),
-							((int) (list.getHeight()) / 5) + (int) list.getY()));
-					g2.draw(new Line2D.Double((int) list.getWidth() + (int) list.getWidth() / 12 + (int) list.getX(),
-							(int) (list.getHeight()) - (int) (list.getHeight()) / 3 + (int) list.getY(),
-							((int) list.getWidth() / 3) * 4 + (int) list.getX(),
-							(int) (list.getHeight()) - (int) (list.getHeight()) / 2 + (int) list.getY()));
-					g2.draw(new Line2D.Double((int) list.getWidth() + (int) list.getWidth() / 12 + (int) list.getX(),
-							(int) (list.getHeight()) / 3 + (int) list.getY(),
-							((int) list.getWidth() / 3) * 4 + (int) list.getX(),
-							(int) (list.getHeight()) / 5 + (int) list.getY()));
-
-					// Mur pour le largeur
-					g2.setColor(list.getColM());
-
-					p = new Polygon();
-					p.addPoint((int) list.getWidth() + (int) list.getWidth() / 12 + (int) list.getX(),
-							(int) (list.getHeight() / 3) + (int) list.getY());
-					p.addPoint(((int) list.getWidth() / 3) * 4 + (int) list.getX(),
-							(int) list.getHeight() / 5 + (int) list.getY());
-
-					p.addPoint(((int) list.getWidth() / 3) * 4 + (int) list.getX(),
-							(int) list.getHeight() - (int) list.getHeight() / 2 + (int) list.getY());
-					p.addPoint((int) list.getWidth() + (int) list.getWidth() / 12 + (int) list.getX(),
-							(int) list.getHeight() - (int) list.getHeight() / 3 + (int) list.getY());
-					g.fillPolygon(p);
-
-					// Mur devant
-					g2.setColor(list.getColM());
-
-					p = new Polygon();
-					p.addPoint((int) list.getWidth() / 12 + (int) list.getX(),
-							(int) list.getHeight() / 3 + (int) list.getY());
-					p.addPoint((int) list.getWidth() + (int) list.getWidth() / 12 + (int) list.getX(),
-							(int) list.getHeight() / 3 + (int) list.getY());
-					p.addPoint((int) list.getWidth() + (int) list.getWidth() / 12 + (int) list.getX(),
-							(int) list.getHeight() - (int) list.getHeight() / 3 + (int) list.getY());
-					p.addPoint((int) list.getWidth() / 12 + (int) list.getX(),
-							(int) list.getHeight() - (int) list.getHeight() / 3 + (int) list.getY());
-					
-					list.setLargeurM(((int) list.getWidth() + (int) list.getWidth() / 12 + (int) list.getX())-((int) list.getWidth() / 12 + (int) list.getX()));
-					list.setHauteurM(((int) list.getHeight() / 3)+((int) list.getHeight() - (int) list.getHeight() / 3));
-
-					g.fillPolygon(p);
-					// la Fenetre
-					g2.setColor(list.getColP());
-					p = new Polygon();
-					p.addPoint((int) list.getWidth() / 10 + (int) list.getX(),
-							(int) list.getHeight() / 2 - (int) list.getHeight() / 8 + (int) list.getY());
-					p.addPoint((int) list.getWidth() / 10 + (int) list.getX(),
-							(int) list.getHeight() / 2 + (int) list.getHeight() / 10 + (int) list.getY());
-					p.addPoint((int) list.getWidth() / 4 + (int) list.getX(),
-							(int) list.getHeight() / 2 + (int) list.getHeight() / 10 + (int) list.getY());
-					p.addPoint((int) list.getWidth() / 4 + (int) list.getX(),
-							(int) list.getHeight() / 2 - (int) list.getHeight() / 8 + (int) list.getY());
-					// la Porte
-					g.fillPolygon(p);
-
-					g2.setColor(list.getColP());
-					p = new Polygon();
-					p.addPoint((int) list.getWidth() - (int) list.getWidth() / 12 + (int) list.getX(),
-							(int) list.getHeight() / 2 - (int) list.getHeight() / 8 + (int) list.getY());
-					p.addPoint((int) list.getWidth() - (int) list.getWidth() / 12 + (int) list.getX(),
-							(int) list.getHeight() / 2 + (int) list.getHeight() / 7 + (int) list.getY());
-					p.addPoint((int) list.getWidth() / 2 + (int) list.getX(),
-							(int) list.getHeight() / 2 + (int) list.getHeight() / 7 + (int) list.getY());
-					p.addPoint((int) list.getWidth() / 2 + (int) list.getX(),
-							(int) list.getHeight() / 2 - (int) list.getHeight() / 8 + (int) list.getY());
-
-					g.fillPolygon(p);
-					break;
-
-				case "GenererMaisonAuto":
-					//Toles
-					g2.setColor(list.getColT());
-					Polygon p1 = new Polygon();
-					p1.addPoint((int) list.getWidth() / 4 + (int) list.getX(),
-							(int) (list.getHeight() / 6 + (int) list.getY()));
-					p1.addPoint(((int) list.getWidth() / 4) * 5 + (int) list.getX(),
-							(int) (list.getHeight() / 6 + (int) list.getY()));
-					p1.addPoint((int) list.getWidth() + (int) list.getWidth() / 12 + (int) list.getX(),
-							(int) (list.getHeight()) / 3 + (int) list.getY());
-					p1.addPoint((int) list.getWidth() / 12 + (int) list.getX(),
-							(int) (list.getHeight()) / 3 + (int) list.getY());
-					g.fillPolygon(p1);
-
-					g2.setColor(new Color(0xAEAEAE));
-
-					g2.draw(new Line2D.Double(((int) list.getWidth() / 4) * 5 + (int) list.getX(),
-							(int) (list.getHeight()) / 6 + (int) list.getY(),
-							((int) list.getWidth() / 3) * 4 + (int) list.getX(),
-							(int) (list.getHeight()) / 5 + (int) list.getY()));
-					g2.draw(new Line2D.Double(((int) list.getWidth() / 3) * 4 + (int) list.getX(),
-							(int) (list.getHeight()) - (int) (list.getHeight()) / 2 + (int) list.getY(),
-							((int) list.getWidth() / 3) * 4 + (int) list.getX(),
-							((int) (list.getHeight()) / 5) + (int) list.getY()));
-					g2.draw(new Line2D.Double((int) list.getWidth() + (int) list.getWidth() / 12 + (int) list.getX(),
-							(int) (list.getHeight()) - (int) (list.getHeight()) / 3 + (int) list.getY(),
-							((int) list.getWidth() / 3) * 4 + (int) list.getX(),
-							(int) (list.getHeight()) - (int) (list.getHeight()) / 2 + (int) list.getY()));
-					g2.draw(new Line2D.Double((int) list.getWidth() + (int) list.getWidth() / 12 + (int) list.getX(),
-							(int) (list.getHeight()) / 3 + (int) list.getY(),
-							((int) list.getWidth() / 3) * 4 + (int) list.getX(),
-							(int) (list.getHeight()) / 5 + (int) list.getY()));
-
-					// Mur pour le largeur
-					g2.setColor(list.getColM());
-
-					p = new Polygon();
-					p.addPoint((int) list.getWidth() + (int) list.getWidth() / 12 + (int) list.getX(),
-							(int) (list.getHeight() / 3) + (int) list.getY());
-					p.addPoint(((int) list.getWidth() / 3) * 4 + (int) list.getX(),
-							(int) list.getHeight() / 5 + (int) list.getY());
-
-					p.addPoint(((int) list.getWidth() / 3) * 4 + (int) list.getX(),
-							(int) list.getHeight() - (int) list.getHeight() / 2 + (int) list.getY());
-					p.addPoint((int) list.getWidth() + (int) list.getWidth() / 12 + (int) list.getX(),
-							(int) list.getHeight() - (int) list.getHeight() / 3 + (int) list.getY());
-					g.fillPolygon(p);
-
-					// Mur devant
-					g2.setColor(list.getColM());
-
-					p = new Polygon();
-					p.addPoint((int) list.getWidth() / 12 + (int) list.getX(),
-							(int) list.getHeight() / 3 + (int) list.getY());
-					p.addPoint((int) list.getWidth() + (int) list.getWidth() / 12 + (int) list.getX(),
-							(int) list.getHeight() / 3 + (int) list.getY());
-					p.addPoint((int) list.getWidth() + (int) list.getWidth() / 12 + (int) list.getX(),
-							(int) list.getHeight() - (int) list.getHeight() / 3 + (int) list.getY());
-					p.addPoint((int) list.getWidth() / 12 + (int) list.getX(),
-							(int) list.getHeight() - (int) list.getHeight() / 3 + (int) list.getY());
-					
-					list.setLargeurM(((int) list.getWidth() + (int) list.getWidth() / 12 + (int) list.getX())-((int) list.getWidth() / 12 + (int) list.getX()));
-					list.setHauteurM(((int) list.getHeight() / 3)+((int) list.getHeight() - (int) list.getHeight() / 3));
-
-					g.fillPolygon(p);
-					// la Fenetre
-					g2.setColor(list.getColP());
-					p = new Polygon();
-					p.addPoint((int) list.getWidth() / 10 + (int) list.getX(),
-							(int) list.getHeight() / 2 - (int) list.getHeight() / 8 + (int) list.getY());
-					p.addPoint((int) list.getWidth() / 10 + (int) list.getX(),
-							(int) list.getHeight() / 2 + (int) list.getHeight() / 10 + (int) list.getY());
-					p.addPoint((int) list.getWidth() / 4 + (int) list.getX(),
-							(int) list.getHeight() / 2 + (int) list.getHeight() / 10 + (int) list.getY());
-					p.addPoint((int) list.getWidth() / 4 + (int) list.getX(),
-							(int) list.getHeight() / 2 - (int) list.getHeight() / 8 + (int) list.getY());
-					// la Porte
-					g.fillPolygon(p);
-
-					g2.setColor(list.getColP());
-					p = new Polygon();
-					p.addPoint((int) list.getWidth() - (int) list.getWidth() / 12 + (int) list.getX(),
-							(int) list.getHeight() / 2 - (int) list.getHeight() / 8 + (int) list.getY());
-					p.addPoint((int) list.getWidth() - (int) list.getWidth() / 12 + (int) list.getX(),
-							(int) list.getHeight() / 2 + (int) list.getHeight() / 7 + (int) list.getY());
-					p.addPoint((int) list.getWidth() / 2 + (int) list.getX(),
-							(int) list.getHeight() / 2 + (int) list.getHeight() / 7 + (int) list.getY());
-					p.addPoint((int) list.getWidth() / 2 + (int) list.getX(),
-							(int) list.getHeight() / 2 - (int) list.getHeight() / 8 + (int) list.getY());
-
-					g.fillPolygon(p);
-					break;
-				default:
-
-					break;
-
+		if (image != null) {
+			g.drawImage(image, 0, 0, null);
+		}
+		for (Geometrie list : tableG) {
+			g2.setColor(list.getBordureCol());
+			g2.setStroke(new BasicStroke(list.getContourTaille(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+			switch (list.typeForme) {
+			case "trace_manuelle":
+				TraceLigne lg = (TraceLigne) list;
+				for (Line2D l : lg.getmL()) {
+					g2.draw(l);
 				}
+				break;
+			case "trace_ligne":
+				Line2D ligne2d = new Line2D.Double(list.getX(), list.getY(), list.getLastX(), list.getLastY());
+				g2.draw(ligne2d);
+
+				list.setLargeurM((int) list.getLastX() - (int) list.getX());
+				break;
+
+			case "traceRectangleV":
+				Rectangle2D rectangle = new Rectangle2D.Double(list.getX(), list.getY(), list.getWidth(),
+						list.getHeight());
+				g2.setStroke(new BasicStroke(list.getContourTaille(), BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER));
+				list.setLargeurM((int) list.getWidth());
+				list.setHauteurM((int) list.getHeight());
+				g2.draw(rectangle);
+				break;
+
+			case "traceRectangleP":
+				Rectangle2D rectangleP = new Rectangle2D.Double(list.getX(), list.getY(), list.getWidth(),
+						list.getHeight());
+				list.setLargeurM((int) list.getWidth());
+				list.setHauteurM((int) list.getHeight());
+				g2.setStroke(new BasicStroke(list.getContourTaille(), BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER));
+
+				g2.fill(rectangleP);
+				break;
+
+			case "traceCercleV":
+				Ellipse2D ellypse = new Ellipse2D.Double(list.getX(), list.getY(), list.getWidth(), list.getHeight());
+				g2.draw(ellypse);
+				break;
+
+			case "traceCercleP":
+				Ellipse2D ellypseP = new Ellipse2D.Double(list.getX(), list.getY(), list.getWidth(), list.getHeight());
+				g2.fill(ellypseP);
+				break;
+			case "traceTriangleV":
+				Polygon triangleL = new Polygon(
+						new int[] { (int) (list.getWidth() / 2 + list.getX()), (int) (list.getWidth() + list.getX()),
+								(int) list.getX() },
+						new int[] { (int) list.getY(), (int) (list.getHeight() + list.getY()),
+								(int) (list.getHeight() + list.getY()) },
+						3);
+				g2.draw(triangleL);
+				break;
+			case "traceTriangleP":
+				Polygon triangleLP = new Polygon(
+						new int[] { (int) (list.getWidth() / 2 + list.getX()), (int) (list.getWidth() + list.getX()),
+								(int) list.getX() },
+						new int[] { (int) list.getY(), (int) (list.getHeight() + list.getY()),
+								(int) (list.getHeight() + list.getY()) },
+						3);
+				g2.fill(triangleLP);
+				break; 
+			case "tracePolygoneV":
+				Polygon HexagoneP = new Polygon(
+						new int[] { (int) (list.getWidth() / 2 + list.getX()), (int) (list.getWidth() + list.getX()),
+								(int) (list.getWidth() + list.getX()), (int) (list.getWidth() / 2 + list.getX()),
+								(int) list.getX(), (int) list.getX() },
+						new int[] { (int) list.getY(), (int) (list.getHeight() / 4 + list.getY()),
+								(int) ((list.getHeight() * 3) / 4 + list.getY()),
+								(int) (list.getHeight() + list.getY()),
+								(int) ((list.getHeight() * 3) / 4 + list.getY()),
+								(int) (list.getHeight() / 4 + list.getY()) },
+						6);
+
+				g2.draw(HexagoneP);
+				break;
+			case "tracePolygoneP":
+				Polygon Hexagone = new Polygon(
+						new int[] { (int) (list.getWidth() / 2 + list.getX()), (int) (list.getWidth() + list.getX()),
+								(int) (list.getWidth() + list.getX()), (int) (list.getWidth() / 2 + list.getX()),
+								(int) list.getX(), (int) list.getX() },
+						new int[] { (int) list.getY(), (int) (list.getHeight() / 4 + list.getY()),
+								(int) ((list.getHeight() * 3) / 4 + list.getY()),
+								(int) (list.getHeight() + list.getY()),
+								(int) ((list.getHeight() * 3) / 4 + list.getY()),
+								(int) (list.getHeight() / 4 + list.getY()) },
+						6);
+
+				g2.fill(Hexagone);
+				break;
+			case "GenererMaison":
+//					//Toles
+				g2.setColor(list.getColT());
+				Polygon p = new Polygon();
+				p.addPoint((int) list.getWidth() / 4 + (int) list.getX(),
+						(int) (list.getHeight() / 6 + (int) list.getY()));
+				p.addPoint(((int) list.getWidth() / 4) * 5 + (int) list.getX(),
+						(int) (list.getHeight() / 6 + (int) list.getY()));
+				p.addPoint((int) list.getWidth() + (int) list.getWidth() / 12 + (int) list.getX(),
+						(int) (list.getHeight()) / 3 + (int) list.getY());
+				p.addPoint((int) list.getWidth() / 12 + (int) list.getX(),
+						(int) (list.getHeight()) / 3 + (int) list.getY());
+				g.fillPolygon(p);
+
+				g2.setColor(new Color(0xAEAEAE));
+
+				g2.draw(new Line2D.Double(((int) list.getWidth() / 4) * 5 + (int) list.getX(),
+						(int) (list.getHeight()) / 6 + (int) list.getY(),
+						((int) list.getWidth() / 3) * 4 + (int) list.getX(),
+						(int) (list.getHeight()) / 5 + (int) list.getY()));
+				g2.draw(new Line2D.Double(((int) list.getWidth() / 3) * 4 + (int) list.getX(),
+						(int) (list.getHeight()) - (int) (list.getHeight()) / 2 + (int) list.getY(),
+						((int) list.getWidth() / 3) * 4 + (int) list.getX(),
+						((int) (list.getHeight()) / 5) + (int) list.getY()));
+				g2.draw(new Line2D.Double((int) list.getWidth() + (int) list.getWidth() / 12 + (int) list.getX(),
+						(int) (list.getHeight()) - (int) (list.getHeight()) / 3 + (int) list.getY(),
+						((int) list.getWidth() / 3) * 4 + (int) list.getX(),
+						(int) (list.getHeight()) - (int) (list.getHeight()) / 2 + (int) list.getY()));
+				g2.draw(new Line2D.Double((int) list.getWidth() + (int) list.getWidth() / 12 + (int) list.getX(),
+						(int) (list.getHeight()) / 3 + (int) list.getY(),
+						((int) list.getWidth() / 3) * 4 + (int) list.getX(),
+						(int) (list.getHeight()) / 5 + (int) list.getY()));
+
+				// Mur pour le largeur
+				g2.setColor(list.getColM());
+
+				p = new Polygon();
+				p.addPoint((int) list.getWidth() + (int) list.getWidth() / 12 + (int) list.getX(),
+						(int) (list.getHeight() / 3) + (int) list.getY());
+				p.addPoint(((int) list.getWidth() / 3) * 4 + (int) list.getX(),
+						(int) list.getHeight() / 5 + (int) list.getY());
+
+				p.addPoint(((int) list.getWidth() / 3) * 4 + (int) list.getX(),
+						(int) list.getHeight() - (int) list.getHeight() / 2 + (int) list.getY());
+				p.addPoint((int) list.getWidth() + (int) list.getWidth() / 12 + (int) list.getX(),
+						(int) list.getHeight() - (int) list.getHeight() / 3 + (int) list.getY());
+				g.fillPolygon(p);
+
+				// Mur devant
+				g2.setColor(list.getColM());
+
+				p = new Polygon();
+				p.addPoint((int) list.getWidth() / 12 + (int) list.getX(),
+						(int) list.getHeight() / 3 + (int) list.getY());
+				p.addPoint((int) list.getWidth() + (int) list.getWidth() / 12 + (int) list.getX(),
+						(int) list.getHeight() / 3 + (int) list.getY());
+				p.addPoint((int) list.getWidth() + (int) list.getWidth() / 12 + (int) list.getX(),
+						(int) list.getHeight() - (int) list.getHeight() / 3 + (int) list.getY());
+				p.addPoint((int) list.getWidth() / 12 + (int) list.getX(),
+						(int) list.getHeight() - (int) list.getHeight() / 3 + (int) list.getY());
+
+				list.setLargeurM(((int) list.getWidth() + (int) list.getWidth() / 12 + (int) list.getX())
+						- ((int) list.getWidth() / 12 + (int) list.getX()));
+				list.setHauteurM(((int) list.getHeight() / 3) + ((int) list.getHeight() - (int) list.getHeight() / 3));
+
+				g.fillPolygon(p);
+				// la Fenetre
+				g2.setColor(list.getColP());
+				p = new Polygon();
+				p.addPoint((int) list.getWidth() / 10 + (int) list.getX(),
+						(int) list.getHeight() / 2 - (int) list.getHeight() / 8 + (int) list.getY());
+				p.addPoint((int) list.getWidth() / 10 + (int) list.getX(),
+						(int) list.getHeight() / 2 + (int) list.getHeight() / 10 + (int) list.getY());
+				p.addPoint((int) list.getWidth() / 4 + (int) list.getX(),
+						(int) list.getHeight() / 2 + (int) list.getHeight() / 10 + (int) list.getY());
+				p.addPoint((int) list.getWidth() / 4 + (int) list.getX(),
+						(int) list.getHeight() / 2 - (int) list.getHeight() / 8 + (int) list.getY());
+				// la Porte
+				g.fillPolygon(p);
+
+				g2.setColor(list.getColP());
+				p = new Polygon();
+				p.addPoint((int) list.getWidth() - (int) list.getWidth() / 12 + (int) list.getX(),
+						(int) list.getHeight() / 2 - (int) list.getHeight() / 8 + (int) list.getY());
+				p.addPoint((int) list.getWidth() - (int) list.getWidth() / 12 + (int) list.getX(),
+						(int) list.getHeight() / 2 + (int) list.getHeight() / 7 + (int) list.getY());
+				p.addPoint((int) list.getWidth() / 2 + (int) list.getX(),
+						(int) list.getHeight() / 2 + (int) list.getHeight() / 7 + (int) list.getY());
+				p.addPoint((int) list.getWidth() / 2 + (int) list.getX(),
+						(int) list.getHeight() / 2 - (int) list.getHeight() / 8 + (int) list.getY());
+
+				g.fillPolygon(p);
+				break;
+
+			case "GenererMaisonAuto":
+				// Toles
+				g2.setColor(list.getColT());
+				Polygon p1 = new Polygon();
+				p1.addPoint((int) list.getWidth() / 4 + (int) list.getX(),
+						(int) (list.getHeight() / 6 + (int) list.getY()));
+				p1.addPoint(((int) list.getWidth() / 4) * 5 + (int) list.getX(),
+						(int) (list.getHeight() / 6 + (int) list.getY()));
+				p1.addPoint((int) list.getWidth() + (int) list.getWidth() / 12 + (int) list.getX(),
+						(int) (list.getHeight()) / 3 + (int) list.getY());
+				p1.addPoint((int) list.getWidth() / 12 + (int) list.getX(),
+						(int) (list.getHeight()) / 3 + (int) list.getY());
+				g.fillPolygon(p1);
+
+				g2.setColor(new Color(0xAEAEAE));
+
+				g2.draw(new Line2D.Double(((int) list.getWidth() / 4) * 5 + (int) list.getX(),
+						(int) (list.getHeight()) / 6 + (int) list.getY(),
+						((int) list.getWidth() / 3) * 4 + (int) list.getX(),
+						(int) (list.getHeight()) / 5 + (int) list.getY()));
+				g2.draw(new Line2D.Double(((int) list.getWidth() / 3) * 4 + (int) list.getX(),
+						(int) (list.getHeight()) - (int) (list.getHeight()) / 2 + (int) list.getY(),
+						((int) list.getWidth() / 3) * 4 + (int) list.getX(),
+						((int) (list.getHeight()) / 5) + (int) list.getY()));
+				g2.draw(new Line2D.Double((int) list.getWidth() + (int) list.getWidth() / 12 + (int) list.getX(),
+						(int) (list.getHeight()) - (int) (list.getHeight()) / 3 + (int) list.getY(),
+						((int) list.getWidth() / 3) * 4 + (int) list.getX(),
+						(int) (list.getHeight()) - (int) (list.getHeight()) / 2 + (int) list.getY()));
+				g2.draw(new Line2D.Double((int) list.getWidth() + (int) list.getWidth() / 12 + (int) list.getX(),
+						(int) (list.getHeight()) / 3 + (int) list.getY(),
+						((int) list.getWidth() / 3) * 4 + (int) list.getX(),
+						(int) (list.getHeight()) / 5 + (int) list.getY()));
+
+				// Mur pour le largeur
+				g2.setColor(list.getColM());
+
+				p = new Polygon();
+				p.addPoint((int) list.getWidth() + (int) list.getWidth() / 12 + (int) list.getX(),
+						(int) (list.getHeight() / 3) + (int) list.getY());
+				p.addPoint(((int) list.getWidth() / 3) * 4 + (int) list.getX(),
+						(int) list.getHeight() / 5 + (int) list.getY());
+
+				p.addPoint(((int) list.getWidth() / 3) * 4 + (int) list.getX(),
+						(int) list.getHeight() - (int) list.getHeight() / 2 + (int) list.getY());
+				p.addPoint((int) list.getWidth() + (int) list.getWidth() / 12 + (int) list.getX(),
+						(int) list.getHeight() - (int) list.getHeight() / 3 + (int) list.getY());
+				g.fillPolygon(p);
+
+				// Mur devant
+				g2.setColor(list.getColM());
+
+				p = new Polygon();
+				p.addPoint((int) list.getWidth() / 12 + (int) list.getX(),
+						(int) list.getHeight() / 3 + (int) list.getY());
+				p.addPoint((int) list.getWidth() + (int) list.getWidth() / 12 + (int) list.getX(),
+						(int) list.getHeight() / 3 + (int) list.getY());
+				p.addPoint((int) list.getWidth() + (int) list.getWidth() / 12 + (int) list.getX(),
+						(int) list.getHeight() - (int) list.getHeight() / 3 + (int) list.getY());
+				p.addPoint((int) list.getWidth() / 12 + (int) list.getX(),
+						(int) list.getHeight() - (int) list.getHeight() / 3 + (int) list.getY());
+
+				list.setLargeurM(((int) list.getWidth() + (int) list.getWidth() / 12 + (int) list.getX())
+						- ((int) list.getWidth() / 12 + (int) list.getX()));
+				list.setHauteurM(((int) list.getHeight() / 3) + ((int) list.getHeight() - (int) list.getHeight() / 3));
+
+				g.fillPolygon(p);
+				// la Fenetre
+				g2.setColor(list.getColP());
+				p = new Polygon();
+				p.addPoint((int) list.getWidth() / 10 + (int) list.getX(),
+						(int) list.getHeight() / 2 - (int) list.getHeight() / 8 + (int) list.getY());
+				p.addPoint((int) list.getWidth() / 10 + (int) list.getX(),
+						(int) list.getHeight() / 2 + (int) list.getHeight() / 10 + (int) list.getY());
+				p.addPoint((int) list.getWidth() / 4 + (int) list.getX(),
+						(int) list.getHeight() / 2 + (int) list.getHeight() / 10 + (int) list.getY());
+				p.addPoint((int) list.getWidth() / 4 + (int) list.getX(),
+						(int) list.getHeight() / 2 - (int) list.getHeight() / 8 + (int) list.getY());
+				// la Porte
+				g.fillPolygon(p);
+
+				g2.setColor(list.getColP());
+				p = new Polygon();
+				p.addPoint((int) list.getWidth() - (int) list.getWidth() / 12 + (int) list.getX(),
+						(int) list.getHeight() / 2 - (int) list.getHeight() / 8 + (int) list.getY());
+				p.addPoint((int) list.getWidth() - (int) list.getWidth() / 12 + (int) list.getX(),
+						(int) list.getHeight() / 2 + (int) list.getHeight() / 7 + (int) list.getY());
+				p.addPoint((int) list.getWidth() / 2 + (int) list.getX(),
+						(int) list.getHeight() / 2 + (int) list.getHeight() / 7 + (int) list.getY());
+				p.addPoint((int) list.getWidth() / 2 + (int) list.getX(),
+						(int) list.getHeight() / 2 - (int) list.getHeight() / 8 + (int) list.getY());
+
+				g.fillPolygon(p);
+				break;
+			default:
+				break;
+
 			}
 		}
+	}
+
 // Methode pour netoyer le panneau de dessin
 	public void effacerTous() {
 		this.tableG = new ArrayList<Geometrie>();
 	}
+
 	// Methode pour pouvoir revenir en arriere
 	public void previous() {
 		if (!tableG.isEmpty()) {
@@ -444,6 +442,7 @@ public class PanneauDessin extends JPanel {
 			repaint();
 		}
 	}
+
 	// Methode pour avancer vers à la derniere image
 	public void next() {
 		if (!saveTrace.isEmpty()) {
@@ -475,7 +474,9 @@ public class PanneauDessin extends JPanel {
 			}
 		}
 	}
-	// Methode pour ouvrir l'explorateur de selectionner l'image en format PNG ou JPEG
+
+	// Methode pour ouvrir l'explorateur de selectionner l'image en format PNG ou
+	// JPEG
 	public void OuvrirImage() throws IOException {
 
 		Graphics2D graph = (Graphics2D) this.getGraphics();
@@ -488,6 +489,7 @@ public class PanneauDessin extends JPanel {
 			effacerTous();
 		}
 	}
+
 	// Methode pour netoyer le panneau de dessin
 	public void nettoyer() {
 		if (tableG.isEmpty()) {
@@ -504,6 +506,7 @@ public class PanneauDessin extends JPanel {
 			}
 		}
 	}
+
 // Les accesseurs
 	public Color getColT() {
 		return colT;
@@ -572,6 +575,7 @@ public class PanneauDessin extends JPanel {
 	public void setColBack(Color colBack) {
 		this.colBack = colBack;
 	}
+
 	public void setColFore(Color colFore) {
 		this.colFore = colFore;
 	}
