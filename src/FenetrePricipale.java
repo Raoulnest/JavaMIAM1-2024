@@ -245,7 +245,6 @@ public class FenetrePricipale {
 					f.setHeight(e.getY() - f.getY());
 					if (z_dessin.getFormeG() == "GenererMaisonAuto") {
 						lblHauteur.setText("Hauteur : " + Geometrie.getHauteurM());
-
 						lblLongueur.setText("Longueur : " + Geometrie.getLargeurM());
 					} else {
 						lblLargeur.setText("Largeur : " + Geometrie.getHauteurM());
