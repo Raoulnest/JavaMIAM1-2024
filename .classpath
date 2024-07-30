@@ -6,8 +6,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="E:/PROGRAMMATION/MLW DISTRIBUTION/Lib/flatlaf-3.4.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/MLW DISTRIBUTION/Downloads/Compressed/jogl-all-2.0.2.jar.zip"/>
-	<classpathentry kind="lib" path="C:/Users/MLW DISTRIBUTION/Downloads/Compressed/jogl-all-2.0.2.jar/jogl-all-2.0.2.jar"/>
+	<classpathentry kind="lib" path="E:/PROGRAMMATION/JAVA ECLIPSE/EDITOR_PAINT/flatlaf-3.4.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

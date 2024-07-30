@@ -3,37 +3,34 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.io.IOException;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JSlider;
 import javax.swing.JSpinner;
-import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import com.formdev.flatlaf.FlatIntelliJLaf;
-import javax.swing.SpinnerNumberModel;
-import java.awt.event.MouseAdapter;
-import javax.swing.ImageIcon;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.event.MenuKeyListener;
-import javax.swing.event.MenuKeyEvent;
 
 public class FenetrePricipale {
 
@@ -247,12 +244,12 @@ public class FenetrePricipale {
 					f.setWidth(e.getX() - f.getX());
 					f.setHeight(e.getY() - f.getY());
 					if (z_dessin.getFormeG() == "GenererMaisonAuto") {
-						lblHauteur.setText("Hauteur : " + f.getHauteurM());
+						lblHauteur.setText("Hauteur : " + Geometrie.getHauteurM());
 
-						lblLongueur.setText("Longueur : " + f.getLargeurM());
+						lblLongueur.setText("Longueur : " + Geometrie.getLargeurM());
 					} else {
-						lblLargeur.setText("Largeur : " + f.getHauteurM());
-						lblLongueur.setText("Longueur : " + f.getLargeurM());
+						lblLargeur.setText("Largeur : " + Geometrie.getHauteurM());
+						lblLongueur.setText("Longueur : " + Geometrie.getLargeurM());
 					}
 				}
 			}

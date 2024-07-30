@@ -1,8 +1,6 @@
 
 
 import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Paint;
 
 // Classe pour construire les differentes formes Geometriques
 public class Geometrie {
